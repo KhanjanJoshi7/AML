@@ -12,8 +12,10 @@ all_genres = mlb.classes_.tolist()
 
 st.title("🎬 Movie Like Predictor")
 
+movies = pd.read_csv("movies.csv")
+movie_list = sorted(movies['title'].unique())
 # --- User Inputs ---
-movie_title = st.text_input("Movie Title", "The Dark Knight (2008)")
+movie_title = st.selectbox("Choose a movie", movie_list)
 year = st.number_input("Release Year", min_value=1900, max_value=datetime.now().year, value=2008)
 user_activity = st.slider("User Activity (No. of Ratings Given)", 0, 1000, 100)
 user_avg_rating = st.slider("User's Avg Rating", 0.0, 5.0, 3.5)
