@@ -2,6 +2,7 @@ import streamlit as st
 import pandas as pd
 import joblib
 from datetime import datetime
+import re
 
 # Load model and encoder
 model = joblib.load("movie_like_predictor.pkl")
@@ -12,8 +13,18 @@ all_genres = mlb.classes_.tolist()
 
 st.title("🎬 Movie Like Predictor")
 
-movies = pd.read_csv("movies.csv")
-movie_list = sorted(movies['title'].unique())
+def clean_title(title):
+    title = str(title).strip()
+    # Remove year in parentheses, e.g. "Toy Story (1995)" → "Toy Story"
+    return re.sub(r"\s+\(\d{4}\)", "", title)
+
+movies['clean_title'] = movies['title'].apply(clean_title)
+
+# Remove duplicates and sort
+movie_list = sorted(movies['clean_title'].drop_duplicates())
+
+# Dropdown for movie selection
+
 # --- User Inputs ---
 movie_title = st.selectbox("Choose a movie", movie_list)
 year = st.number_input("Release Year", min_value=1900, max_value=datetime.now().year, value=2008)
