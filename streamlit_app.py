@@ -13,6 +13,8 @@ all_genres = mlb.classes_.tolist()
 
 st.title("🎬 Movie Like Predictor")
 
+movies = pd.read_csv("movies.csv")  # <-- This was missing
+
 def clean_title(title):
     title = str(title).strip()
     # Remove year in parentheses, e.g. "Toy Story (1995)" → "Toy Story"
